@@ -3,7 +3,9 @@ package com.example.artspace
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -17,6 +19,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -32,6 +37,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
@@ -42,6 +49,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -88,21 +96,61 @@ fun ArtistPage(navController: NavController) {
 
   // ARTIST PAGE section A
   // TODO: 1. Artist Profile including image, name, and info (birthplace, and years alive)
+  Column(modifier = Modifier
+    .verticalScroll(rememberScrollState())
+    .padding(20.dp)) {
+    Spacer(modifier = Modifier.size(dimensionResource(id = R.dimen.spacer_medium)))
+    Row(modifier = Modifier.align(Alignment.CenterHorizontally), verticalAlignment = Alignment.CenterVertically,) {
+      Image(painter = painterResource(id = art.artistImageId),
+        contentDescription = "",
+        contentScale = ContentScale.Crop,
+        modifier = Modifier
+          .clip(CircleShape)
+          .size(140.dp)
+          .border(
+            BorderStroke(3.dp, Color.LightGray),
+            CircleShape
+          )
+          .padding(3.dp)
+          .clip(CircleShape))
+      Spacer(modifier = Modifier.size(dimensionResource(id = R.dimen.spacer_medium)))
+      Column(modifier = Modifier) {
+        Text(
+          text = stringResource(id = art.artistId),
+          fontWeight = FontWeight.Bold,
+          fontSize = 18.sp,
+          textAlign = TextAlign.Center
+        )
+        Text(
+          text = stringResource(id = art.artistInfoId),
+          fontSize = 14.sp,
+          textAlign = TextAlign.Center
+        )
+      }
+    }
 
-  // ARTIST PAGE section B
-  // TODO: 2  Artist bio
+    Spacer(modifier = Modifier.size(dimensionResource(id = R.dimen.spacer_extra_large)))
 
-  // <--- Safely REMOVE the following code and ADD your code here --->
+    // ARTIST PAGE section B
+    // TODO: 2  Artist bio
+
+    Text(
+      text = stringResource(id = art.artistBioId),
+      textAlign = TextAlign.Left
+    )
+
+    // <--- Safely REMOVE the following code and ADD your code here --->
 //  Text(text = "(D) Display Artist Profile and Bio here as per the design")
 
-  // DO NOT MODIFY THE FOLLOWING CODE
-  // You can use the following code to navigate to the previous screen:
-  // ARTIST PAGE section C
-  // TODO: 3 place the code below in the proper Row or Column layout
-  Button(onClick = {
-    navController.navigate(Screen.Home.route + "/$id")
-  }) {
-    Text(text = stringResource(id = R.string.back))
+    // DO NOT MODIFY THE FOLLOWING CODE
+    // You can use the following code to navigate to the previous screen:
+    // ARTIST PAGE section C
+    // TODO: 3 place the code below in the proper Row or Column layout
+    Button(onClick = {
+      navController.navigate(Screen.Home.route + "/$id")
+    }) {
+      Text(text = stringResource(id = R.string.back))
+    }
   }
 }
 
@@ -124,7 +172,7 @@ fun ArtWall(
         contentDescription = stringResource(id = artDescriptionId),
         modifier = Modifier
           .padding(15.dp)
-          .border(3.dp, Color.Gray)
+          .border(10.dp, Color.LightGray)
           .align(Alignment.CenterHorizontally)
           .clickable {
             navController.navigate(Screen.Artist.route + "/$artistId")
