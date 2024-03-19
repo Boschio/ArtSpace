@@ -134,13 +134,11 @@ fun ArtistPage(navController: NavController) {
       textAlign = TextAlign.Left
     )
 
-    // <--- Safely REMOVE the following code and ADD your code here --->
-//  Text(text = "(D) Display Artist Profile and Bio here as per the design")
-
     // DO NOT MODIFY THE FOLLOWING CODE
     // You can use the following code to navigate to the previous screen:
     // ARTIST PAGE section C
     // TODO: 3 place the code below in the proper Row or Column layout
+    // entire code block is encapsulated in a Column above
     Button(onClick = {
       navController.navigate(Screen.Home.route + "/$id")
     }) {
@@ -169,24 +167,13 @@ fun ArtWall(
           .padding(15.dp)
           .border(10.dp, Color.LightGray)
           .align(Alignment.CenterHorizontally)
+          // TODO: 5. Add a click listener to navigate to the artist page
           .clickable {
             navController.navigate(Screen.Artist.route + "/$artistId")
           },
         contentScale = ContentScale.Fit
       )
   }
-
-  // TODO: 5. Add a click listener to navigate to the artist page
-  // to navigate to the artist page, use the following code:
-  // navController.navigate(Screen.Artist.route + "/$artistId")
-  // see example below.
-
-  // <--- Safely REMOVE the following code and ADD your code here --->
-//  Box(modifier = Modifier.clickable {
-//    navController.navigate(Screen.Artist.route + "/$artistId")
-//  }) {
-//    Text(text = "(A) Display Artwork Image here as per the design")
-//  }
 }
 
 @Composable
@@ -212,8 +199,6 @@ fun ArtDescriptor(artTitleId: Int, artistId: Int, artYearId: Int) {
         textAlign = TextAlign.Center
       )
   }
-  // <--- Safely REMOVE the following code and ADD your code here --->
-//  Text(text = "(B) Display Artwork Title, Artist Name and Year here as per the design")
 }
 
 
@@ -266,19 +251,6 @@ fun DisplayController(current: Int, move: (Int) -> Unit) {
       Text("Next")
     }
   }
-
-  // NOTE: 
-  // The buttons should be disabled if there is no previous or next artwork to navigate to
-  // You can use the following code to disable the button:
-  //  enabled = current != 0 // for the previous button
-
-  // You can use the following code to navigate to the previous or next artwork:
-  // move(current - 1) // for the previous button
-  // move(current + 1) // for the next button
-
-  // <--- Safely REMOVE the following code and ADD your code here --->
-//  Text(text = "(C) Display buttons to navigate to the previous and next artwork here as per the design")
-
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
