@@ -5,15 +5,12 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -33,14 +30,13 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
@@ -57,7 +53,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.artspace.data.DataSource
-import com.example.artspace.model.Art
 import com.example.artspace.ui.theme.ArtSpaceTheme
 
 class MainActivity : ComponentActivity() {
@@ -100,7 +95,7 @@ fun ArtistPage(navController: NavController) {
     .verticalScroll(rememberScrollState())
     .padding(20.dp)) {
     Spacer(modifier = Modifier.size(dimensionResource(id = R.dimen.spacer_medium)))
-    Row(modifier = Modifier.align(Alignment.CenterHorizontally), verticalAlignment = Alignment.CenterVertically,) {
+    Row(modifier = Modifier.align(Alignment.CenterHorizontally), verticalAlignment = Alignment.CenterVertically) {
       Image(painter = painterResource(id = art.artistImageId),
         contentDescription = "",
         contentScale = ContentScale.Crop,
@@ -226,22 +221,48 @@ fun ArtDescriptor(artTitleId: Int, artistId: Int, artYearId: Int) {
 fun DisplayController(current: Int, move: (Int) -> Unit) {
 
   // HOME PAGE section C
+  var prevEnabled by remember { mutableStateOf(false) }
+  var nextEnabled by remember { mutableStateOf(true) }
 
+  if (current in 1..3) {
+    prevEnabled = true
+    nextEnabled = true
+  }
+  if (current <= 0) {
+    prevEnabled = false
+    nextEnabled = true
+  }
+  if (current >= 4) {
+    prevEnabled = true
+    nextEnabled = false
+  }
 
-  Row(    modifier = Modifier
+  Row(modifier = Modifier
     .padding(vertical = 10.dp)
     .fillMaxWidth()
     .wrapContentWidth(Alignment.CenterHorizontally)) {
     // TODO: 9. Add a button to navigate to the previous artwork
     FilledTonalButton(modifier = Modifier
       .padding(horizontal = 20.dp)
-      .width(110.dp), onClick = { if(current > 0) move(current - 1) }) {
+      .width(110.dp),
+      enabled = prevEnabled,
+      onClick = {
+        if(current > 0) {
+          move(current - 1)
+        }
+      }) {
       Text("Previous")
     }
     // TODO: 10. Add a button to navigate to the next artwork
     Button(modifier = Modifier
       .padding(horizontal = 20.dp)
-      .width(110.dp), onClick = { if(current < 4) move(current + 1) }) {
+      .width(110.dp),
+      enabled = nextEnabled,
+      onClick = {
+        if(current < 4) {
+          move(current + 1)
+        }
+      }) {
       Text("Next")
     }
   }
